@@ -29,6 +29,22 @@ impl Client {
     pub fn new(host: String, port: u32, connection: TcpStream) -> Self {
         Client{ host, port, connection }
     }
+
+    pub fn read(&self) -> Vec<u8> {
+        let mut response: Vec<u8> = vec![];
+        let mut buf = BufReader::new(client.connection);
+        loop {
+            match client.connection.read(&mut response) {
+                Ok(n) => {
+                    if n == 0 {
+                        break;
+                    }
+                },
+                Err(e) => panic!("{}", e)
+            }
+        }
+        return response;
+    }
 }
 
 pub fn connect(host: &str, port: u32) -> Result<Client, Errors> {
